@@ -1,0 +1,29 @@
+project_name:
+  type: str
+  help: Human-friendly project name
+  default: Iris MLOps
+
+project_slug:
+  type: str
+  help: Repository slug (kebab-case)
+  default: "{{ project_name|lower|replace(' ', '-') }}"
+
+package_name:
+  type: str
+  help: Python package name (snake_case)
+  default: "{{ project_slug|replace('-', '_') }}"
+
+description:
+  type: str
+  help: Short description of the project
+  default: Classification/regression on the Iris dataset with full MLOps workflow
+
+author_name:
+  type: str
+  help: Your name
+  default: Anonymous
+
+dataset_name:
+  type: str
+  help: Primary dataset used in the project
+  default: iris

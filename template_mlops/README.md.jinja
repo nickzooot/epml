@@ -1,0 +1,31 @@
+# {{ project_name }}
+
+{{ description }}.
+
+## Dataset
+- Uses the `{{ dataset_name }}` dataset (default: Iris) for quick classification/regression experiments.
+- Keep raw data under `data/raw/` and processed features under `data/processed/`.
+
+## Project layout
+- `src/{{ package_name }}/` — package entrypoint for data prep, feature engineering, and modeling code.
+- `configs/` — configuration stubs for experiments and training runs.
+- `data/raw` and `data/processed` — input data and intermediate artifacts (tracked via placeholders).
+- `models/` — saved model binaries or checkpoints.
+- `notebooks/` — exploratory work; keep them lightweight.
+- `reports/` — experiment summaries and plots.
+- `scripts/` — CLI utilities (data download, training, evaluation).
+- `tests/` — unit and integration tests.
+
+## Getting started
+1) Create a virtual environment and install your chosen dependency manager (to be added in later steps).
+2) Populate `configs/base.yaml` with experiment settings (seed, paths, model defaults).
+3) Add data prep and training code in `src/{{ package_name }}/`.
+
+## Template usage (Copier)
+This project was generated from the local Copier template in `template_mlops/`.
+
+To create a new project from the template:
+```bash
+copier copy --trust --defaults template_mlops your-new-project
+```
+Customize answers during the prompt or pass `--data key=value` flags to override defaults.

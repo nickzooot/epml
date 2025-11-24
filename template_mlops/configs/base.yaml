@@ -1,0 +1,10 @@
+seed: 42
+dataset: "{{ dataset_name }}"
+paths:
+  raw: data/raw
+  processed: data/processed
+  models: models
+  reports: reports
+model:
+  type: baseline
+  params: {}
