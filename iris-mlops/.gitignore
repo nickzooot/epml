@@ -34,5 +34,9 @@ models/*
 
 # Reports / logs
 reports/**
+!reports/*.md
+!reports/**/*.md
+!reports/screenshots/
+!reports/screenshots/**
 !reports/.gitkeep
 logs/
