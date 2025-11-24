@@ -1,0 +1,26 @@
+[workspace]
+name = "iris-mlops"
+version = "0.1.0"
+description = "Iris classification/regression with MLOps workflow scaffold"
+channels = ["conda-forge"]
+platforms = ["osx-64", "osx-arm64"]
+
+[dependencies]
+python = "3.12.*"
+numpy = "1.26.4"
+pandas = "2.2.3"
+scikit-learn = "1.5.2"
+pyyaml = "6.0.2"
+black = "24.10.0"
+isort = "5.13.2"
+ruff = "0.8.1"
+mypy = "1.13.0"
+bandit = "1.7.9"
+pre-commit = "3.8.0"
+
+[tasks]
+fmt = "ruff format . && black . && isort ."
+lint = "ruff check ."
+types = "mypy ."
+security = "bandit -c bandit.yaml -r src"
+qa = "pre-commit run --all-files"

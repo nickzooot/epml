@@ -1,0 +1,10 @@
+skips:
+  - B101  # allow use of assert in non-production code
+exclude:
+  - tests
+  - data
+  - reports
+  - models
+  - notebooks
+  - .venv
+  - venv
