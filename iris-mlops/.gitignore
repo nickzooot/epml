@@ -40,3 +40,7 @@ reports/**
 !reports/screenshots/**
 !reports/.gitkeep
 logs/
+
+# MLflow tracking artifacts (local)
+mlruns/
+mlruns.db

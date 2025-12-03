@@ -32,6 +32,12 @@ Classification/regression on the Iris dataset with full MLOps workflow.
 - Stage `get_data` in `dvc.yaml` runs `python scripts/get_data.py` and produces `data/raw/iris.csv` (gitignored, tracked via DVC with `dvc.lock`).
 - Commands (inside pixi env): `dvc repro get_data` to refresh data, `dvc push` / `dvc pull` to sync with the local remote.
 
+## Model tracking & registry (MLflow)
+- Tracking/registry URI: `sqlite:///mlruns.db`, artifacts: `mlruns/` (both gitignored for local use).
+- Train & register baseline: `pixi run train` (runs `scripts/train_model.py`, logs metrics, registers model `iris-classifier`).
+- List model versions: `pixi run list-models` (simple overview via MLflow client).
+- Compare versions: use MLflow UI (`mlflow ui --backend-store-uri sqlite:///mlruns.db --default-artifact-root mlruns`) or `list-models` output for quick checks of versions/stages.
+
 ## Git workflow
 - Repo initialized on `main`; integration branch `develop` and sample feature branch `feature/iris-baseline` are created.
 - Work in `feature/*`, merge to `develop` after review, and promote stable changes to `main`.
