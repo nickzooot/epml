@@ -27,6 +27,11 @@ Classification/regression on the Iris dataset with full MLOps workflow.
 - Activate env: `pixi shell` (or prefix commands with `pixi run ...`).
 - Handy tasks: `pixi run fmt`, `pixi run lint`, `pixi run types`, `pixi run security`, `pixi run qa` (full pre-commit sweep).
 
+## Data versioning (DVC)
+- Config in `.dvc/config` (subdir mode), local remote `../dvc-remote`.
+- Stage `get_data` in `dvc.yaml` runs `python scripts/get_data.py` and produces `data/raw/iris.csv` (gitignored, tracked via DVC with `dvc.lock`).
+- Commands (inside pixi env): `dvc repro get_data` to refresh data, `dvc push` / `dvc pull` to sync with the local remote.
+
 ## Git workflow
 - Repo initialized on `main`; integration branch `develop` and sample feature branch `feature/iris-baseline` are created.
 - Work in `feature/*`, merge to `develop` after review, and promote stable changes to `main`.

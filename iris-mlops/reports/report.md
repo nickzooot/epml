@@ -28,6 +28,11 @@
 - Правила: работа в `feature/*`, интеграция через `develop`, стабилизация на `main`.
 - `.gitignore` настроен под ML (данные, модели, кэши инструментов).
 
+## Версионирование данных (DVC)
+- Настроен DVC в поддиректории проекта (`.dvc/config`, subdir=true), remote: локальная папка `../dvc-remote`.
+- Stage `get_data` в `dvc.yaml`: запускает `python scripts/get_data.py`, сохраняет датасет в `data/raw/iris.csv` (игнорируется git, хранится через DVC; метаданные в `dvc.lock`).
+- Использование: `pixi shell`, затем `dvc repro get_data` для генерации, `dvc push` / `dvc pull` для синхронизации с локальным remote.
+
 ## Docker
 - Dockerfile основан на `python:3.12-slim`, устанавливает pinned зависимости и выставляет `PYTHONPATH=/app/src`.
 - Билд: `docker build -t iris-mlops .`
@@ -39,3 +44,4 @@
 - [x] Инструменты качества кода и pre-commit настроены.
 - [x] Git workflow описан и ветки созданы (`develop`, `feature/iris-baseline`).
 - [x] Dockerfile добавлен для контейнеризации.
+- [x] DVC настроен, локальный remote `../dvc-remote`, создан stage `get_data` с данными iris.

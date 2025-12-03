@@ -1,0 +1,12 @@
+schema: '2.0'
+stages:
+  get_data:
+    cmd: python scripts/get_data.py
+    deps:
+    - path: scripts/get_data.py
+      md5: e11fee7fab0882425393df6116fd919b
+      size: 254
+    outs:
+    - path: data/raw/iris.csv
+      md5: 4d301abed5efe50eccda350cde38e0eb
+      size: 2777

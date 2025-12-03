@@ -1,0 +1,12 @@
+[core]
+    analytics = false
+    remote = local
+
+[cache]
+    dir = .dvc/cache
+
+[index]
+    dir = .dvc/tmp/index
+
+['remote "local"']
+    url = ../dvc-remote
