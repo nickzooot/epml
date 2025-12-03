@@ -48,7 +48,16 @@
 ## Docker
 - Dockerfile основан на `python:3.12-slim`, устанавливает pinned зависимости и выставляет `PYTHONPATH=/app/src`.
 - Билд: `docker build -t iris-mlops .`
-- Запуск ( smoke ): `docker run --rm iris-mlops`
+- Запуск (smoke): `docker run --rm iris-mlops`
+- Для DVC/MLflow внутри контейнера: запускать из корня репо (`practical_ml`), монтировать весь репозиторий и remote, работать из `iris-mlops`:
+  ```
+  docker run --rm -it \
+    -v "$(pwd)":/workspace \
+    -v "$(pwd)/dvc-remote":/dvc-remote \
+    -w /workspace/iris-mlops \
+    iris-mlops bash
+  ```
+  Затем `dvc pull`, `python scripts/train_model.py` или поднять MLflow UI с локальными путями.
 
 ## Краткий чек-лист выполнения
 - [x] Структура проекта создана через Copier, README заполнен.

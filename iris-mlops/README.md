@@ -58,6 +58,15 @@ Classification/regression on the Iris dataset with full MLOps workflow.
 ## Docker
 - Build: `docker build -t iris-mlops .`
 - Run (example): `docker run --rm iris-mlops`
+- DVC/MLflow inside container: монтируйте весь репозиторий(practical_ml) и DVC-remote, работайте из `iris-mlops`:
+  ```
+  docker run --rm -it \
+    -v "$(pwd)":/workspace \
+    -v "$(pwd)/dvc-remote":/dvc-remote \
+    -w /workspace/iris-mlops \
+    iris-mlops bash
+  ```
+  Внутри: `dvc pull`, `python scripts/train_model.py`, при желании `mlflow ui --backend-store-uri sqlite:///mlruns.db --default-artifact-root mlruns`.
 
 ## Template usage (Copier)
 This project was generated from the local Copier template in `template_mlops/`.

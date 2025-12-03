@@ -4,7 +4,7 @@ WORKDIR /app
 
 # System deps (optional: build tools if needed)
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential \
+    && apt-get install -y --no-install-recommends build-essential git \
     && rm -rf /var/lib/apt/lists/*
 
 COPY pyproject.toml README.md /app/
@@ -16,7 +16,8 @@ RUN pip install --no-cache-dir \
     pandas==2.2.3 \
     scikit-learn==1.5.2 \
     pyyaml==6.0.2 \
-    mlflow==2.16.0
+    mlflow==2.16.0 \
+    dvc==3.64.0
 
 ENV PYTHONPATH=/app/src
 
