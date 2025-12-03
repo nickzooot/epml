@@ -38,6 +38,12 @@ Classification/regression on the Iris dataset with full MLOps workflow.
 - List model versions: `pixi run list-models` (simple overview via MLflow client).
 - Compare versions: use MLflow UI (`mlflow ui --backend-store-uri sqlite:///mlruns.db --default-artifact-root mlruns`) or `list-models` output for quick checks of versions/stages.
 
+## Repro steps
+- `pixi install` (pins deps from `pixi.toml`), then `pixi shell`.
+- Данные: `dvc pull` (или `dvc repro get_data` + `dvc push` если нужно пересобрать).
+- Модель: `pixi run train` (создаёт новую версию в MLflow registry); `pixi run list-models` для проверки версий.
+- Контейнер: `docker build -t iris-mlops .` (для локальной среды нужно, чтобы Docker был доступен).
+
 ## Git workflow
 - Repo initialized on `main`; integration branch `develop` and sample feature branch `feature/iris-baseline` are created.
 - Work in `feature/*`, merge to `develop` after review, and promote stable changes to `main`.

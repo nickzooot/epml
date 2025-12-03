@@ -15,7 +15,8 @@ RUN pip install --no-cache-dir \
     numpy==1.26.4 \
     pandas==2.2.3 \
     scikit-learn==1.5.2 \
-    pyyaml==6.0.2
+    pyyaml==6.0.2 \
+    mlflow==2.16.0
 
 ENV PYTHONPATH=/app/src
 

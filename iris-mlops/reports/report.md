@@ -39,6 +39,12 @@
 - Просмотр версий: `pixi run list-models`; для подробного сравнения — UI `mlflow ui --backend-store-uri sqlite:///mlruns.db --default-artifact-root mlruns`.
 - Метаданные: теги `stage=baseline`, `data_version=dvc:get_data`, метрики — accuracy; параметры — тип модели, max_iter.
 
+## Воспроизводимость
+- Зависимости зафиксированы в `pixi.toml`/`pyproject.toml` (numpy/pandas/sklearn/mlflow и т.д.).
+- Шаги: `pixi install` → `pixi shell` → `dvc pull` (или `dvc repro get_data`) → `pixi run train` → при необходимости `pixi run list-models`.
+- Контейнер: `docker build -t iris-mlops .` (Dockerfile включает все pinned зависимости).
+- Проверено: `dvc repro get_data && dvc push` проходит; mlflow трекинг локально доступен.
+
 ## Docker
 - Dockerfile основан на `python:3.12-slim`, устанавливает pinned зависимости и выставляет `PYTHONPATH=/app/src`.
 - Билд: `docker build -t iris-mlops .`
