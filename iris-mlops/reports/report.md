@@ -67,3 +67,7 @@
 - [x] Dockerfile добавлен для контейнеризации.
 - [x] DVC настроен, локальный remote `../dvc-remote`, создан stage `get_data` с данными iris.
 - [x] MLflow настроен локально (sqlite + artifacts), скрипты для обучения/регистрации и просмотра версий добавлены.
+
+## ДЗ 3: Трекинг экспериментов (W&B)
+- Отчет: `reports/hw3_wandb.md`
+- Проект W&B: https://wandb.ai/nickzooot/iris-mlops-hw3

@@ -44,3 +44,6 @@ logs/
 # MLflow tracking artifacts (local)
 mlruns/
 mlruns.db
+
+# Weights & Biases tracking artifacts (local/offline)
+wandb/

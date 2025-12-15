@@ -17,6 +17,7 @@ RUN pip install --no-cache-dir \
     scikit-learn==1.5.2 \
     pyyaml==6.0.2 \
     mlflow==2.16.0 \
+    wandb==0.23.1 \
     dvc==3.64.0
 
 ENV PYTHONPATH=/app/src

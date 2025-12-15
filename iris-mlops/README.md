@@ -38,6 +38,11 @@ Classification/regression on the Iris dataset with full MLOps workflow.
 - List model versions: `pixi run list-models` (simple overview via MLflow client).
 - Compare versions: use MLflow UI (`mlflow ui --backend-store-uri sqlite:///mlruns.db --default-artifact-root mlruns`) or `list-models` output for quick checks of versions/stages.
 
+## Experiment tracking (Weights & Biases)
+- 15+ experiments (offline by default): `python scripts/wandb_experiments.py --mode offline`
+- Online logging: set `WANDB_API_KEY` (see `iris-mlops/.env.example`) and run `python scripts/wandb_experiments.py --mode online`
+- Query/compare runs (online API): `python scripts/wandb_query_runs.py --entity <you_or_team> --project iris-mlops-hw3 --group hw3-iris`
+
 ## Repro steps
 - `pixi install` (pins deps from `pixi.toml`), then `pixi shell`.
 - Данные: `dvc pull` (или `dvc repro get_data` + `dvc push` если нужно пересобрать).

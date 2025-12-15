@@ -1,8 +1,6 @@
-import pathlib
 from typing import Tuple
 
 import mlflow
-import numpy as np
 import pandas as pd
 from sklearn import datasets
 from sklearn.linear_model import LogisticRegression
@@ -20,7 +18,6 @@ def load_data() -> Tuple[pd.DataFrame, pd.Series]:
 
 def main() -> None:
     tracking_uri = "sqlite:///mlruns.db"
-    artifact_location = "mlruns"
     experiment_name = "iris-baseline"
     model_name = "iris-classifier"
 
@@ -46,7 +43,6 @@ def main() -> None:
         mlflow.log_metrics({"accuracy": acc})
 
         # Save and register model
-        model_path = pathlib.Path("models") / "logreg"
         mlflow.sklearn.log_model(
             sk_model=clf,
             artifact_path="model",
