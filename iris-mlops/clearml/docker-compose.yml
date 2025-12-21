@@ -1,0 +1,157 @@
+version: "3.6"
+
+services:
+  apiserver:
+    image: clearml/server@sha256:769d74cec9df9e26500f6a2c040a6aeecaae2dc9e1bd5c8eca41250f59a02493
+    container_name: clearml-apiserver
+    command:
+      - apiserver
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - mongo
+      - elasticsearch
+      - fileserver
+    environment:
+      CLEARML_ELASTIC_SERVICE_HOST: elasticsearch
+      CLEARML_ELASTIC_SERVICE_PORT: 9200
+      CLEARML_MONGODB_SERVICE_HOST: mongo
+      CLEARML_MONGODB_SERVICE_PORT: 27017
+      CLEARML_REDIS_SERVICE_HOST: redis
+      CLEARML_REDIS_SERVICE_PORT: 6379
+      CLEARML_SERVER_DEPLOYMENT_TYPE: linux
+
+      # Pre-populate demo content (users, projects, etc.) for the first run.
+      CLEARML__apiserver__pre_populate__enabled: "true"
+      CLEARML__apiserver__pre_populate__zip_files: "/opt/clearml/db-pre-populate"
+      CLEARML__apiserver__pre_populate__artifacts_path: "/mnt/fileserver"
+
+      # Async cleanup service expects the fileserver URL prefixes list.
+      CLEARML__services__async_urls_delete__enabled: "true"
+      CLEARML__services__async_urls_delete__fileserver__url_prefixes: "[${CLEARML_FILES_HOST:-}]"
+
+      # API auth keys to use from scripts (local-only; safe to keep in `.env`).
+      CLEARML__secure__credentials__services_agent__user_key: ${CLEARML_API_ACCESS_KEY:-}
+      CLEARML__secure__credentials__services_agent__user_secret: ${CLEARML_API_SECRET_KEY:-}
+    volumes:
+      - ./.clearml-server/logs:/var/log/clearml
+      - ./.clearml-server/config:/opt/clearml/config
+      - ./.clearml-server/fileserver:/mnt/fileserver
+    ports:
+      - "8008:8008"
+    networks:
+      - backend
+      - frontend
+
+  webserver:
+    image: clearml/server@sha256:769d74cec9df9e26500f6a2c040a6aeecaae2dc9e1bd5c8eca41250f59a02493
+    container_name: clearml-webserver
+    command:
+      - webserver
+    restart: unless-stopped
+    depends_on:
+      - apiserver
+    ports:
+      - "8080:80"
+    networks:
+      - backend
+      - frontend
+
+  fileserver:
+    image: clearml/server@sha256:769d74cec9df9e26500f6a2c040a6aeecaae2dc9e1bd5c8eca41250f59a02493
+    container_name: clearml-fileserver
+    command:
+      - fileserver
+    restart: unless-stopped
+    environment:
+      CLEARML__fileserver__delete__allow_batch: "true"
+    volumes:
+      - ./.clearml-server/logs:/var/log/clearml
+      - ./.clearml-server/fileserver:/mnt/fileserver
+      - ./.clearml-server/config:/opt/clearml/config
+    ports:
+      - "8081:8081"
+    networks:
+      - backend
+      - frontend
+
+  mongo:
+    image: mongo:7.0.22
+    container_name: clearml-mongo
+    restart: unless-stopped
+    command: --setParameter internalQueryMaxBlockingSortMemoryUsageBytes=196100200
+    volumes:
+      - ./.clearml-server/mongo/db:/data/db
+      - ./.clearml-server/mongo/configdb:/data/configdb
+    networks:
+      - backend
+
+  elasticsearch:
+    image: elasticsearch:8.17.0
+    container_name: clearml-elastic
+    restart: unless-stopped
+    environment:
+      bootstrap.memory_lock: "true"
+      cluster.name: clearml
+      discovery.type: "single-node"
+      xpack.security.enabled: "false"
+      cluster.routing.allocation.disk.watermark.low: 500mb
+      cluster.routing.allocation.disk.watermark.high: 500mb
+      cluster.routing.allocation.disk.watermark.flood_stage: 500mb
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - ./.clearml-server/elastic:/usr/share/elasticsearch/data
+    networks:
+      - backend
+
+  redis:
+    image: redis:7.4.1
+    container_name: clearml-redis
+    restart: unless-stopped
+    volumes:
+      - ./.clearml-server/redis:/data
+    networks:
+      - backend
+
+  async_delete:
+    image: clearml/server@sha256:769d74cec9df9e26500f6a2c040a6aeecaae2dc9e1bd5c8eca41250f59a02493
+    container_name: clearml-async-delete
+    restart: unless-stopped
+    depends_on:
+      - apiserver
+      - redis
+      - mongo
+      - elasticsearch
+      - fileserver
+    environment:
+      CLEARML_ELASTIC_SERVICE_HOST: elasticsearch
+      CLEARML_ELASTIC_SERVICE_PORT: 9200
+      CLEARML_MONGODB_SERVICE_HOST: mongo
+      CLEARML_MONGODB_SERVICE_PORT: 27017
+      CLEARML_REDIS_SERVICE_HOST: redis
+      CLEARML_REDIS_SERVICE_PORT: 6379
+      PYTHONPATH: /opt/clearml/apiserver
+      CLEARML__services__async_urls_delete__fileserver__url_prefixes: "[${CLEARML_FILES_HOST:-}]"
+    entrypoint:
+      - python3
+      - -m
+      - jobs.async_urls_delete
+      - --fileserver-host
+      - http://fileserver:8081
+    volumes:
+      - ./.clearml-server/logs:/var/log/clearml
+      - ./.clearml-server/config:/opt/clearml/config
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    driver: bridge

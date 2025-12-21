@@ -43,10 +43,17 @@ Classification/regression on the Iris dataset with full MLOps workflow.
 - Online logging: set `WANDB_API_KEY` (see `iris-mlops/.env.example`) and run `python scripts/wandb_experiments.py --mode online`
 - Query/compare runs (online API): `python scripts/wandb_query_runs.py --entity <you_or_team> --project iris-mlops-hw3 --group hw3-iris`
 
+## Documentation (MkDocs)
+- MkDocs config: `mkdocs.yml`, sources: `docs/`
+- Auto-sync reports + generate plots/tables + build: `pixi run docs-build`
+- Serve locally: `pixi run docs-serve`
+- GitHub Pages deployment: `.github/workflows/docs.yml` (enable `Settings → Pages → Source: GitHub Actions`)
+
 ## Repro steps
 - `pixi install` (pins deps from `pixi.toml`), then `pixi shell`.
 - Данные: `dvc pull` (или `dvc repro get_data` + `dvc push` если нужно пересобрать).
 - Модель: `pixi run train` (создаёт новую версию в MLflow registry); `pixi run list-models` для проверки версий.
+- Документация: `pixi run docs-build`.
 - Контейнер: `docker build -t iris-mlops .` (для локальной среды нужно, чтобы Docker был доступен).
 
 ## Git workflow

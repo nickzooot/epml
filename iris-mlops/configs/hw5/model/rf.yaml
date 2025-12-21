@@ -1,0 +1,6 @@
+name: rf
+needs_scaling: false
+params:
+  n_estimators: 300
+  max_depth: null
+

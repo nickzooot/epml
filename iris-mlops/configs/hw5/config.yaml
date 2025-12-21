@@ -1,0 +1,31 @@
+defaults:
+  - model: logreg
+  - _self_
+  - override hydra/job_logging: disabled
+  - override hydra/hydra_logging: disabled
+
+seed: 42
+
+paths:
+  raw: data/raw
+  models: models/hw5
+  reports: reports/hw5
+
+data:
+  filename: iris.csv
+  target_col: target
+  test_size: 0.2
+
+clearml:
+  project: iris-mlops-hw5
+  group: hw5-local
+  output_model_name: iris-hw5-classifier
+  tags: [hw5, iris]
+
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: .
+  output_subdir: null
+

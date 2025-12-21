@@ -1,0 +1,32 @@
+defaults:
+  - model: logreg
+  - _self_
+  - override hydra/job_logging: disabled
+  - override hydra/hydra_logging: disabled
+
+seed: 42
+force: false
+
+paths:
+  raw: data/raw
+  processed: data/processed/hw4
+  models: models/hw4
+  reports: reports/hw4
+
+data:
+  filename: iris.csv
+  target_col: target
+  test_size: 0.2
+
+metrics:
+  primary: accuracy
+
+selection:
+  models: [logreg, rf, svc]
+
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: .
+  output_subdir: null

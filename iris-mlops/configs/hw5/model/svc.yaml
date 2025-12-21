@@ -1,0 +1,6 @@
+name: svc
+needs_scaling: true
+params:
+  kernel: rbf
+  C: 3.0
+

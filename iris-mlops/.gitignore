@@ -6,6 +6,7 @@ __pycache__/
 # Virtual environments
 .venv/
 venv/
+.pixi/
 .env
 
 # Tooling caches
@@ -13,6 +14,16 @@ venv/
 .pytest_cache/
 .ruff_cache/
 .benchmarks/
+
+# Airflow (local)
+.airflow/
+airflow.cfg
+airflow.db
+airflow-webserver.pid
+
+# ClearML Server (local)
+clearml/.clearml-server/
+.clearml-server/
 
 # Editors
 .vscode/
@@ -34,12 +45,28 @@ models/*
 
 # Reports / logs
 reports/**
+!reports/**/
 !reports/*.md
 !reports/**/*.md
-!reports/screenshots/
 !reports/screenshots/**
+!reports/hw3/wandb_experiments_summary.csv
+!reports/hw4/metrics_*.json
+!reports/hw4/summary.json
+!reports/hw5/clearml_experiments_summary.csv
 !reports/.gitkeep
 logs/
+
+# MkDocs build output
+site/
+
+# MkDocs generated inputs (copied reports, screenshots, generated plots)
+docs/reports/hw3_wandb.md
+docs/reports/hw4_airflow.md
+docs/reports/hw5_clearml.md
+docs/reports/hw6_docs.md
+docs/reports/experiments_generated.md
+docs/assets/generated/
+docs/assets/screenshots/
 
 # MLflow tracking artifacts (local)
 mlruns/
