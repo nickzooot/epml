@@ -68,6 +68,8 @@ pixi run docs-build
 ---
 
 ## Скриншоты (результаты из отчетов, доступные в docs)
+MkDocs:
+![MkDocs](screenshots/hw6_mkdocs.png)
 W&B:
 ![W&B Runs](screenshots/runs.png)
 
